@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23cd6409e8d0f734db4f94b73da31369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyPrefab: {fileID: 2000002887615147465, guid: 73040f46d956a2342a63b3221cde04dd, type: 3}
-  keySpawnLocation: {fileID: 0}
-  breakEffectPrefab: {fileID: 5966544003492168238, guid: 65006eaeb51f4ae438dace1e907d5f42, type: 3}
-  targetDoor: {fileID: 0}
+  _keyPrefab: {fileID: 488533955734271497, guid: d408222750b794544b0754b81eca15e1, type: 3}
+  _keySpawnLocation: {fileID: 0}
+  _breakEffectPrefab: {fileID: 5966544003492168238, guid: 65006eaeb51f4ae438dace1e907d5f42, type: 3}
+  _targetDoor: {fileID: 0}

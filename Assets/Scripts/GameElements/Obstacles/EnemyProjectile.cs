@@ -7,56 +7,54 @@ namespace GameElements.Obstacles
     [RequireComponent(typeof(Rigidbody))]
     public class EnemyProjectile : MonoBehaviour
     {
-        [SerializeField] private float speed = 20.0f;
-        [SerializeField] private float lifeTime = 5.0f;
+        [SerializeField] private float _speed = 20.0f;
+        [SerializeField] private float _lifeTime = 5.0f;
 
         private Vector3 _moveDirection;
         private Rigidbody _rb;
         private CharacterControlSwitcher _controlSwitcher;
-        public Health sharedHealth;
+        private Health _sharedHealth;
 
         void Awake()
         {
-            sharedHealth = FindAnyObjectByType<Health>();
-            gameObject.tag = "EnemyBullet";
-            Invoke(nameof(Kill), lifeTime);
-
+            _sharedHealth = FindAnyObjectByType<Health>();
             _controlSwitcher = FindAnyObjectByType<CharacterControlSwitcher>();
-            _moveDirection = transform.up;
-
             _rb = GetComponent<Rigidbody>();
+            gameObject.tag = "EnemyBullet";
+            Invoke(nameof(Kill), _lifeTime);
+            _moveDirection = transform.up;
         }
 
         void FixedUpdate()
         {
-            _rb.MovePosition(_rb.position + _moveDirection * (Time.fixedDeltaTime * speed));
+            _rb.MovePosition(_rb.position + _moveDirection * (Time.fixedDeltaTime * _speed));
         }
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.name == "Player")
             {
-                if (sharedHealth != null)
+                if (_sharedHealth)
                 {
                     Debug.Log("Player took dmg");
-                    sharedHealth.TakeDamage(1);
+                    _sharedHealth.TakeDamage(1);
                 }
                 Kill();
             }
             else if (other.name == "Companion")
             {
-                if (sharedHealth != null)
+                if (_sharedHealth)
                 {
-                    sharedHealth.TakeDamage(1);
+                    _sharedHealth.TakeDamage(1);
                     Debug.Log("Companion took dmg");
-                    if (_controlSwitcher != null)
+                    if (_controlSwitcher)
                     {
                         _controlSwitcher.AutoSwitchToPlayer();
                     }
                 }
                 Kill();
             }
-            else if (other.CompareTag("Wall") || other.CompareTag("Door") || other.CompareTag("Ground") || other.CompareTag("Door"))
+            else if (other.CompareTag("Ground") || other.CompareTag("Wall") || other.CompareTag("Door") || other.CompareTag("Destructible") )
             {
                 Kill();
             }

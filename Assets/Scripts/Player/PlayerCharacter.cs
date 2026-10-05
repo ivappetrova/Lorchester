@@ -129,12 +129,12 @@ namespace Player
             _currentButtonMovable = buttonMovable;
         }
 
-        public override void EnableControl()
+        public virtual void EnableControl()
         {
             _isControlEnabled = true;
         }
 
-        public override void DisableControl()
+        public virtual void DisableControl()
         {
             _isControlEnabled = false;
             MovementBehaviour.DesiredMovementDirection = Vector3.zero;

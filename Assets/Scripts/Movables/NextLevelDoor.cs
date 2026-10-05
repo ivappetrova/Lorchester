@@ -8,7 +8,7 @@ namespace Movables
         {
             base.UnlockDoor();
 
-            int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+            var nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
             SceneManager.LoadScene(nextSceneIndex);
         }
     }

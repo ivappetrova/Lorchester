@@ -5,37 +5,34 @@ namespace GameElements
 {
     public class Destructible : MonoBehaviour
     {
-        [SerializeField] private GameObject keyPrefab;
-        [SerializeField] private Transform keySpawnLocation;
-        [SerializeField] private GameObject breakEffectPrefab;
-        [SerializeField] private Door targetDoor;
+        [SerializeField] private Transform _keySpawnLocation;
+        [SerializeField] private Door _targetDoor;
+        
+        [SerializeField] private GameObject _keyPrefab;
+        [SerializeField] private GameObject _breakEffectPrefab;
 
         public void Break()
         {
-
-            if (breakEffectPrefab != null)
+            if (_breakEffectPrefab)
             {
-                Instantiate(breakEffectPrefab, transform.position, Quaternion.identity);
-
+                Instantiate(_breakEffectPrefab, transform.position, Quaternion.identity);
             }
 
-            if (keyPrefab != null && keySpawnLocation != null)
+            if (_keyPrefab && _keySpawnLocation)
             {
-                GameObject spawnedKey = Instantiate(keyPrefab, keySpawnLocation.position, Quaternion.identity);
+                var spawnedKey = Instantiate(_keyPrefab, _keySpawnLocation.position, Quaternion.identity);
 
                 // Set the target door for the spawned key
-                Key keyScript = spawnedKey.GetComponent<Key>();
-                if (keyScript != null && targetDoor != null)
+                var keyScript = spawnedKey.GetComponent<Key>();
+                if (keyScript && _targetDoor)
                 {
-                    keyScript.targetDoor = targetDoor;
+                    keyScript.SetTargetDoor(_targetDoor);
                 }
                 else
                 {
                     Debug.Log("Key or Target Door is missing!");
                 }
             }
-
-            // Destroy the statue
             Destroy(gameObject);
         }
     }

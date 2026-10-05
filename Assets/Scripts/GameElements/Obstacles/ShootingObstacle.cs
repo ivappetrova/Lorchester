@@ -5,20 +5,18 @@ namespace GameElements.Obstacles
 {
     public class ShootingObstacle : MonoBehaviour
     {
-        [SerializeField] private GameObject projectilePrefab;
-        [SerializeField] private Transform bulletSocket;
-        [SerializeField] private float shootInterval = 2.0f;
-        [SerializeField] private SoundEmitter soundEmitter;
-
+        [SerializeField] private float _shootInterval = 2.0f;
+        [SerializeField] private GameObject _projectilePrefab;
+        [SerializeField] private Transform _bulletSocket;
+        
+        private SoundEmitter _soundEmitter;
         private float _shootTimer;
 
         private void Awake()
-        {
-            if (soundEmitter == null)
-                soundEmitter = GetComponent<SoundEmitter>();
+        { 
+            _soundEmitter = GetComponent<SoundEmitter>();
 
-            // Dormant until a ZoneController explicitly activates this shooter - no
-            // per-frame work happens until then.
+            // It's off until a ZoneController explicitly activates this shooter
             enabled = false;
         }
 
@@ -26,20 +24,18 @@ namespace GameElements.Obstacles
         {
             _shootTimer -= Time.deltaTime;
 
-            if (_shootTimer <= 0.0f)
-            {
-                ShootProjectile();
-                _shootTimer = shootInterval;
-            }
+            if (!(_shootTimer <= 0.0f)) return;
+            ShootProjectile();
+            _shootTimer = _shootInterval;
         }
 
         // Called by ZoneController when the player crosses this zone's entrance/exit.
-        public void SetActive(bool active)
+        public void SetActive(bool isActive)
         {
-            Debug.Log($"[{name}] SetActive({active}) called - enabled was {enabled}");
-            enabled = active;
+            Debug.Log($"[{name}] SetActive({isActive}) called - enabled was {enabled}");
+            enabled = isActive;
 
-            if (active)
+            if (isActive)
             {
                 _shootTimer = 0f;
             }
@@ -47,11 +43,9 @@ namespace GameElements.Obstacles
 
         private void ShootProjectile()
         {
-            if (projectilePrefab != null && bulletSocket != null)
-            {
-                Instantiate(projectilePrefab, bulletSocket.position, bulletSocket.rotation);
-                soundEmitter?.PlaySound();
-            }
+            if (!_projectilePrefab || !_bulletSocket) return;
+            Instantiate(_projectilePrefab, _bulletSocket.position, _bulletSocket.rotation);
+            _soundEmitter?.PlaySound();
         }
     }
 }

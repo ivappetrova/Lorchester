@@ -4,10 +4,10 @@ namespace Movables
 {
     public class KeyInteraction : MonoBehaviour
     {
-        public Key currentKey; 
+        [SerializeField] private Key _currentKey; 
         void Update()
         {
-            if (currentKey != null && !currentKey.isCollected)
+            if (_currentKey && !_currentKey.IsCollected)
             {
               //  Debug.Log("In range of the key.");
             }
@@ -18,11 +18,11 @@ namespace Movables
             if (other.CompareTag("Key"))
             {
              
-                currentKey = other.GetComponent<Key>();
+                _currentKey = other.GetComponent<Key>();
 
-                if (currentKey != null && !currentKey.isCollected)
+                if (_currentKey && !_currentKey.IsCollected)
                 {
-                    currentKey.CollectKey(); 
+                    _currentKey.CollectKey(); 
                     Debug.Log("Key collected!");
                 }
                 else
@@ -36,7 +36,7 @@ namespace Movables
         {
             if (other.CompareTag("Key"))
             { 
-                currentKey = null;
+                _currentKey = null;
             }
         }
     }

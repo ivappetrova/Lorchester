@@ -4,8 +4,8 @@ namespace Player
 {
     public class CharacterControlSwitcher : MonoBehaviour
     {
-        [SerializeField] private PlayerCharacter player;     
-        [SerializeField] private CompanionFollow companion;  
+        [SerializeField] private PlayerCharacter _player;     
+        [SerializeField] private CompanionFollow _companion;  
 
         private void Start()
         {
@@ -16,7 +16,6 @@ namespace Player
 
         private void Update()
         {
-        
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 SwitchToPlayer();
@@ -29,23 +28,19 @@ namespace Player
 
         private void SwitchToPlayer()
         {
-            if (player != null && companion != null)
-            {
-                player.EnableControl();
-                companion.SetPlayer(player.transform);  
-                companion.SetFollowMode();              
-                Debug.Log("Switched control to the player.");
-            }
+            if (!_player || !_companion) return;
+            _player.EnableControl();
+            _companion.SetPlayer(_player.transform);  
+            _companion.SetFollowMode();              
+            Debug.Log("Switched control to the player.");
         }
 
         private void SwitchToCompanion()
         {
-            if (player != null && companion != null)
-            {
-                companion.SetFlyingMode();
-                player.DisableControl();
-                Debug.Log("Switched control to the companion.");
-            }
+            if (!_player || !_companion) return;
+            _companion.SetFlyingMode();
+            _player.DisableControl();
+            Debug.Log("Switched control to the companion.");
         }
 
         // Method to auto-switch control to the player

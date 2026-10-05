@@ -5,13 +5,13 @@ namespace Movables
 {
     public class ButtonMovable : MonoBehaviour
     {
-        [SerializeField] private GameObject door; 
+        [SerializeField] private GameObject _door; 
 
         private float _elapsedTime;
         private bool _isMoving;
         private bool _isDoorOpen;  
-        public float doorOpenHeight = 3f; 
-        public float doorClosedHeight; 
+        public float DoorOpenHeight = 3f; 
+        public float DoorClosedHeight; 
 
         public void ToggleDoor()
         {
@@ -21,7 +21,7 @@ namespace Movables
             {
                 // Close the door
                 _elapsedTime = 0f;
-                StartCoroutine(MoveDoor(doorClosedHeight));
+                StartCoroutine(MoveDoor(DoorClosedHeight));
                 
                 _isDoorOpen = !_isDoorOpen;
             }
@@ -29,7 +29,7 @@ namespace Movables
             {
                 // Open the door
                 _elapsedTime = 0f;
-                StartCoroutine(MoveDoor(doorOpenHeight));
+                StartCoroutine(MoveDoor(DoorOpenHeight));
                
                 _isDoorOpen = !_isDoorOpen;
             }
@@ -40,17 +40,17 @@ namespace Movables
             _isMoving = true;
             float duration = 2f; 
 
-            Vector3 startingPosition = door.transform.position;
-            Vector3 targetPosition = new Vector3(door.transform.position.x, targetHeight, door.transform.position.z);
+            Vector3 startingPosition = _door.transform.position;
+            Vector3 targetPosition = new Vector3(_door.transform.position.x, targetHeight, _door.transform.position.z);
 
             while (_elapsedTime < duration)
             {
-                door.transform.position = Vector3.Lerp(startingPosition, targetPosition, (_elapsedTime / duration));
+                _door.transform.position = Vector3.Lerp(startingPosition, targetPosition, (_elapsedTime / duration));
                 _elapsedTime += Time.deltaTime;
                 yield return null;
             }
 
-            door.transform.position = targetPosition; 
+            _door.transform.position = targetPosition; 
             _isMoving = false;
         }
     }

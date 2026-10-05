@@ -6,36 +6,38 @@ namespace GameElements.Obstacles
 {
     public class ThornObstacle : MonoBehaviour
     {
-        public Transform spawnPoint; 
-        public CharacterControlSwitcher controlSwitcher; 
-        public Health sharedHealth;
+        [SerializeField] private Transform _spawnPoint; 
+        [SerializeField] private CharacterControlSwitcher _controlSwitcher; 
+        [SerializeField] private Health _sharedHealth;
 
         private void OnTriggerEnter(Collider collision)
         {
-            if (collision.name == "Player")
+            switch (collision.name)
             {
-                if (sharedHealth != null)
+                case "Player":
                 {
-                    Debug.Log("Player took dmg");
-                    sharedHealth.TakeDamage(1);
-                }
-                collision.transform.position = spawnPoint.position;
-               
-            }
-            else if (collision.name == "Companion")
-            {
-                // Handle companion collision with thorns
-                if (sharedHealth != null)
-                {
-                    sharedHealth.TakeDamage(1);
-                    Debug.Log("Companion took dmg");                
-                    if (controlSwitcher != null)
+                    if (_sharedHealth)
                     {
-                        controlSwitcher.AutoSwitchToPlayer();
+                        Debug.Log("Player took dmg");
+                        _sharedHealth.TakeDamage(1);
+                    }
+                    collision.transform.position = _spawnPoint.position;
+                    break;
+                }
+                // Handle companion collision with thorns
+                case "Companion" when _sharedHealth == null:
+                    return;
+                case "Companion":
+                {
+                    _sharedHealth.TakeDamage(1);
+                    Debug.Log("Companion took dmg");                
+                    if (_controlSwitcher)
+                    {
+                        _controlSwitcher.AutoSwitchToPlayer();
                     }
 
+                    break;
                 }
-
             }
         }
     }

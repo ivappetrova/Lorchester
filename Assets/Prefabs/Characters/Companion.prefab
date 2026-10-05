@@ -98,7 +98,7 @@ MonoBehaviour:
   player: {fileID: 0}
   followDistance: 1.5
   verticalOffset: 1.5
-  followSpeed: 4
+  followSpeed: 5
   directionTurnSpeed: 6
   movementThreshold: 0.75
   velocitySmoothing: 10

@@ -5,56 +5,47 @@ namespace Movables
 {
     public class ButtonInteraction : MonoBehaviour
     {
-        public ButtonMovable[] currentDoors;  
+        [SerializeField] private ButtonMovable[] _currentDoors; 
+        
         private bool _isPlayerInRange;  
+        
         void Update()
         {
-            if (_isPlayerInRange)
+            if (!_isPlayerInRange) return;
+            if (!Keyboard.current.eKey.wasReleasedThisFrame) return;
+            foreach (var buttonMovable in _currentDoors)
             {
-                if (Keyboard.current.eKey.wasReleasedThisFrame)
+                if (buttonMovable)
                 {
-                    foreach (var t in currentDoors)
-                    {
-                        if (t != null)
-                        {
-                            t.ToggleDoor(); 
-                        }
-                        else
-                        {
+                    buttonMovable.ToggleDoor(); 
+                }
+                else
+                {
                             
-                        }
-                    }
                 }
             }
         }
 
         void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Player"))  
-            {
-                Debug.Log("Player entered button's trigger zone BUTTON INTERACTION!");
+            if (!other.CompareTag("Player")) return;
+            Debug.Log("Player entered button's trigger zone BUTTON INTERACTION!");
 
-                ButtonMovable[] buttonMovable = gameObject.GetComponents<ButtonMovable>();
-               
-                    if (buttonMovable != null)
-                    {
-                        currentDoors = buttonMovable;
+            var buttonMovable = gameObject.GetComponents<ButtonMovable>();
+
+            if (buttonMovable == null) return;
+            _currentDoors = buttonMovable;
                        
-                        _isPlayerInRange = true;
-                    }        
-            }
+            _isPlayerInRange = true;
         }
 
         void OnTriggerExit(Collider other)
         {
-            if (other.CompareTag("Player"))
-            {
-                Debug.Log("Player exited button's trigger zone! BUTTON INTERACTION");
-                _isPlayerInRange = false;
+            if (!other.CompareTag("Player")) return;
+            Debug.Log("Player exited button's trigger zone! BUTTON INTERACTION");
+            _isPlayerInRange = false;
 
-                currentDoors = null;
-        
-            }
+            _currentDoors = null;
         }
     }
 }

@@ -122,7 +122,7 @@ namespace Player
             return desiredPosition;
         }
 
-        public override void EnableControl()
+        public virtual void EnableControl()
         {
             // Reset inputs when control is enabled
             _isControlEnabled = true;
@@ -130,7 +130,7 @@ namespace Player
             _horizontalInput = 0f; // Reset horizontal input to prevent unintended movement
         }
 
-        public override void DisableControl()
+        public virtual void DisableControl()
         {
             _isControlEnabled = false;
             _verticalInput = 0f;

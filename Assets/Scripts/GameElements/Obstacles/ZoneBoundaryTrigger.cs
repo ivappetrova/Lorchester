@@ -7,33 +7,35 @@ namespace GameElements.Obstacles
     [RequireComponent(typeof(Collider))]
     public class ZoneBoundaryTrigger : MonoBehaviour
     {
-        [SerializeField] private ZoneController zoneController;
-        [SerializeField] private BoundaryRole role;
+        private ZoneController _zoneController;
+        
+        [SerializeField] private BoundaryRole _role;
 
         private void Awake()
         {
-            if (zoneController == null)
-                zoneController = GetComponentInParent<ZoneController>();
+            _zoneController = GetComponentInParent<ZoneController>();
 
-            Debug.Log($"[{name}] Awake - role={role}, zoneController found: {zoneController != null}");
+            Debug.Log($"[{name}] Awake - role={_role}, zoneController found: {_zoneController}");
 
-            var col = GetComponent<Collider>();
-            if (col != null && !col.isTrigger)
-            {
-                Debug.LogWarning($"{name}: Is Trigger is off - forcing it on.", this);
-                col.isTrigger = true;
-            }
+            var colliderComponent = GetComponent<Collider>();
+            if (!colliderComponent || colliderComponent.isTrigger) return;
+            Debug.LogWarning($"{name}: Is Trigger is off - forcing it on.", this);
+            colliderComponent.isTrigger = true;
         }
 
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Player")) return;
-            if (zoneController == null) return;
+            if (!_zoneController) return;
 
-            if (role == BoundaryRole.Entrance)
-                zoneController.ActivateZone();
-            else // Exit
-                zoneController.DeactivateZone();
+            if (_role == BoundaryRole.Entrance)
+            {
+                _zoneController.ActivateZone();
+            }
+            else
+            {
+                _zoneController.DeactivateZone();
+            }
         }
     }
 }
